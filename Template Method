@@ -1,0 +1,92 @@
+using System;
+
+abstract class Beverage{
+    public void PrepareRecipe(){
+        BoilWater();
+        Brew();
+        PourInCup();
+        if (CustomerWantsCondiments())
+            AddCondiments();
+    }
+
+    void BoilWater(){
+        Console.WriteLine("Кипячение воды");
+    }
+
+    void PourInCup(){
+        Console.WriteLine("Наливание в чашку");
+    }
+
+    protected abstract void Brew();
+    protected abstract void AddCondiments();
+
+    protected virtual bool CustomerWantsCondiments(){
+        return true;
+    }
+}
+
+class Tea : Beverage{
+    protected override void Brew(){
+        Console.WriteLine("Заваривание чая");
+    }
+
+    protected override void AddCondiments(){
+        Console.WriteLine("Добавление лимона");
+    }
+}
+
+class Coffee : Beverage{
+    protected override void Brew(){
+        Console.WriteLine("Приготовление кофе");
+    }
+
+    protected override void AddCondiments(){
+        Console.WriteLine("Добавление сахара и молока");
+    }
+
+    protected override bool CustomerWantsCondiments(){
+        Console.WriteLine("Добавить сахар и молоко? (д/н)");
+        string input = Console.ReadLine();
+
+        if (input == null) return false;
+
+        input = input.ToLower();
+
+        if (input == "д") return true;
+        if (input == "н") return false;
+
+        Console.WriteLine("Неверный ввод");
+        return false;
+    }
+}
+
+class HotChocolate : Beverage{
+    protected override void Brew(){
+        Console.WriteLine("Смешивание шоколадного порошка");
+    }
+
+    protected override void AddCondiments(){
+        Console.WriteLine("Добавление маршмеллоу");
+    }
+}
+
+class Program{
+    static void Main(){
+        Beverage tea = new Tea();
+        Beverage coffee = new Coffee();
+        Beverage chocolate = new HotChocolate();
+
+        Console.WriteLine("Приготовление чая");
+        tea.PrepareRecipe();
+
+        Console.WriteLine();
+
+        Console.WriteLine("Приготовление кофе");
+        coffee.PrepareRecipe();
+
+        Console.WriteLine();
+
+        Console.WriteLine("Приготовление горячего шоколада");
+        chocolate.PrepareRecipe();
+    }
+}
